@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omlet Arcade 2 - Início</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(180deg, #ff7300, #f4f4f4);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: auto;
+            max-height: 600px;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.5s ease;
+        }
+
+        /* Logo */
+        .logo {
+            width: 120px;
+            margin-bottom: 20px;
+            transition: transform 0.5s ease;
+        }
+
+        /* Título */
+        h1 {
+            font-size: 24px;
+            color: #ff7300;
+            margin: 0;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            transition: transform 0.5s ease;
+        }
+
+        .btn {
+            display: block;
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+            outline: none;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-login {
+            background-color: #ff7300;
+            color: white;
+            margin-top: 20px; /* Adiciona um espaçamento superior */
+        }
+
+        .btn-signup {
+            background-color: #666666;
+            color: white;
+        }
+
+        .btn-back {
+            background-color: #666666;
+            color: white;
+        }
+
+        .btn:active {
+            transform: scale(1);
+            box-shadow: none;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .footer a {
+            color: #ff7300;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Fade-in para login e criar conta */
+        .login-fields, .signup-fields {
+            display: none;
+            animation: fade-in 0.5s ease-out forwards;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Estilo dos campos de entrada */
+        .input-field {
+            width: 90%;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .input-field:focus {
+            border-color: #ff7300;
+            box-shadow: 0 0 8px rgba(255, 115, 0, 0.6);
+            outline: none;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .btn-container .btn {
+            width: 48%;
+        }
+
+        /* Ajustes para mobile */
+        @media (max-width: 500px) {
+            .container {
+                width: 90%;
+                padding: 15px;
+            }
+
+            .logo {
+                width: 100px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .input-field {
+                font-size: 14px;
+            }
+
+            .btn-enter {
+                width: 80%;
+            }
+
+            .footer {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="initial-screen">
+        <div class="title-container">
+            <img src="https://imgur.com/QVjY8XU.png" alt="Logo Omlet Arcade 2" class="logo">
+            <h1>Bem-vindo ao Omlet Arcade 2</h1>
+        </div>
+
+        <button class="btn btn-login" onclick="showLoginFields()">Entrar</button>
+        <button class="btn btn-signup" onclick="showSignupFields()">Criar uma Conta</button>
+
+        <div class="login-fields">
+            <input type="text" class="input-field" placeholder="Nome de Usuário" id="username">
+            <input type="password" class="input-field" placeholder="Senha" id="password">
+
+            <div class="btn-container">
+                <button class="btn btn-back" onclick="goBack()">Voltar</button>
+                <button class="btn btn-enter" onclick="login()">Entrar</button>
+            </div>
+        </div>
+
+        <div class="signup-fields">
+            <input type="text" class="input-field" placeholder="Nome de Usuário" id="signup-username">
+            <input type="password" class="input-field" placeholder="Senha" id="signup-password">
+
+            <div class="btn-container">
+                <button class="btn btn-back" onclick="goBackToInitial()">Voltar</button>
+                <button class="btn btn-enter" onclick="createAccount()">Criar Conta</button>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Desgraça criada por <a href="https://discordapp.com/users/820967650812362772">Flutter</a>.</p>
+        </div>
+    </div>
+
+    <script>
+        function showLoginFields() {
+            document.querySelector('.btn-login').style.display = 'none'; 
+            document.querySelector('.btn-signup').style.display = 'none'; 
+            document.querySelector('.footer').style.display = 'none'; 
+            
+            // Exibe os campos de login
+            document.querySelector('.login-fields').style.display = 'flex'; 
+
+            // Começa a animação do contêiner
+            setTimeout(function() {
+                document.querySelector('.container').style.maxHeight = '1000px'; /* Aumento o tamanho do contêiner */
+                document.querySelector('.container').style.padding = '29px'; 
+            }, 10);
+        }
+
+        function showSignupFields() {
+            document.querySelector('.btn-login').style.display = 'none'; 
+            document.querySelector('.btn-signup').style.display = 'none'; 
+            document.querySelector('.footer').style.display = 'none'; 
+            
+            // Exibe os campos de criação de conta
+            document.querySelector('.signup-fields').style.display = 'flex'; 
+
+            // Começa a animação do contêiner
+            setTimeout(function() {
+                document.querySelector('.container').style.maxHeight = '1000px'; /* Aumento o tamanho do contêiner */
+                document.querySelector('.container').style.padding = '29px'; 
+            }, 10);
+        }
+
+        function goBack() {
+            document.querySelector('.login-fields').style.display = 'none';
+            document.querySelector('.btn-login').style.display = 'block'; 
+            document.querySelector('.btn-signup').style.display = 'block'; 
+            document.querySelector('.footer').style.display = 'block'; 
+            
+            document.querySelector('.container').style.maxHeight = '600px'; /* Retorno à altura original */
+            document.querySelector('.container').style.padding = '20px'; 
+        }
+
+        function goBackToInitial() {
+            document.querySelector('.signup-fields').style.display = 'none';
+            document.querySelector('.btn-login').style.display = 'block'; 
+            document.querySelector('.btn-signup').style.display = 'block'; 
+            document.querySelector('.footer').style.display = 'block'; 
+            
+            document.querySelector('.container').style.maxHeight = '600px'; /* Retorno à altura original */
+            document.querySelector('.container').style.padding = '20px'; 
+        }
+
+        function login() {
+            alert('Login realizado com sucesso!');
+        }
+
+        function createAccount() {
+            alert('Conta criada com sucesso!');
+        }
+    </script>
+</body>
+</html>
