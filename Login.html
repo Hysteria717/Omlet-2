@@ -37,14 +37,12 @@
             transition: max-height 0.5s ease, padding 0.5s ease;
         }
 
-        /* Logo */
         .logo {
             width: 120px;
             margin-bottom: 20px;
             transition: transform 0.5s ease;
         }
 
-        /* Título */
         h1 {
             font-size: 24px;
             color: #ff7300;
@@ -77,7 +75,7 @@
         .btn-login {
             background-color: #ff7300;
             color: white;
-            margin-top: 20px; /* Adiciona um espaçamento superior */
+            margin-top: 20px;
         }
 
         .btn-signup {
@@ -111,7 +109,6 @@
             text-decoration: underline;
         }
 
-        /* Fade-in para login e criar conta */
         .login-fields, .signup-fields {
             display: none;
             animation: fade-in 0.5s ease-out forwards;
@@ -130,7 +127,6 @@
             }
         }
 
-        /* Estilo dos campos de entrada */
         .input-field {
             width: 90%;
             padding: 12px;
@@ -159,7 +155,13 @@
             width: 48%;
         }
 
-        /* Ajustes para mobile */
+        .error-message {
+            display: none;
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
         @media (max-width: 500px) {
             .container {
                 width: 90%;
@@ -209,6 +211,7 @@
         </div>
 
         <div class="signup-fields">
+            <p class="error-message" id="signup-error"></p>
             <input type="text" class="input-field" placeholder="Nome de Usuário" id="signup-username">
             <input type="password" class="input-field" placeholder="Senha" id="signup-password">
 
@@ -225,61 +228,89 @@
 
     <script>
         function showLoginFields() {
-            document.querySelector('.btn-login').style.display = 'none'; 
-            document.querySelector('.btn-signup').style.display = 'none'; 
-            document.querySelector('.footer').style.display = 'none'; 
-            
-            // Exibe os campos de login
-            document.querySelector('.login-fields').style.display = 'flex'; 
+            document.querySelector('.btn-login').style.display = 'none';
+            document.querySelector('.btn-signup').style.display = 'none';
+            document.querySelector('.footer').style.display = 'none';
 
-            // Começa a animação do contêiner
+            document.querySelector('.login-fields').style.display = 'flex';
+
             setTimeout(function() {
-                document.querySelector('.container').style.maxHeight = '1000px'; /* Aumento o tamanho do contêiner */
-                document.querySelector('.container').style.padding = '29px'; 
+                document.querySelector('.container').style.maxHeight = '1000px';
+                document.querySelector('.container').style.padding = '29px';
             }, 10);
         }
 
         function showSignupFields() {
-            document.querySelector('.btn-login').style.display = 'none'; 
-            document.querySelector('.btn-signup').style.display = 'none'; 
-            document.querySelector('.footer').style.display = 'none'; 
-            
-            // Exibe os campos de criação de conta
-            document.querySelector('.signup-fields').style.display = 'flex'; 
+            document.querySelector('.btn-login').style.display = 'none';
+            document.querySelector('.btn-signup').style.display = 'none';
+            document.querySelector('.footer').style.display = 'none';
 
-            // Começa a animação do contêiner
+            document.querySelector('.signup-fields').style.display = 'flex';
+
             setTimeout(function() {
-                document.querySelector('.container').style.maxHeight = '1000px'; /* Aumento o tamanho do contêiner */
-                document.querySelector('.container').style.padding = '29px'; 
+                document.querySelector('.container').style.maxHeight = '1000px';
+                document.querySelector('.container').style.padding = '29px';
             }, 10);
         }
 
         function goBack() {
             document.querySelector('.login-fields').style.display = 'none';
-            document.querySelector('.btn-login').style.display = 'block'; 
-            document.querySelector('.btn-signup').style.display = 'block'; 
-            document.querySelector('.footer').style.display = 'block'; 
-            
-            document.querySelector('.container').style.maxHeight = '600px'; /* Retorno à altura original */
-            document.querySelector('.container').style.padding = '20px'; 
+            document.querySelector('.btn-login').style.display = 'block';
+            document.querySelector('.btn-signup').style.display = 'block';
+            document.querySelector('.footer').style.display = 'block';
+
+            document.querySelector('.container').style.maxHeight = '600px';
+            document.querySelector('.container').style.padding = '20px';
         }
 
         function goBackToInitial() {
             document.querySelector('.signup-fields').style.display = 'none';
-            document.querySelector('.btn-login').style.display = 'block'; 
-            document.querySelector('.btn-signup').style.display = 'block'; 
-            document.querySelector('.footer').style.display = 'block'; 
-            
-            document.querySelector('.container').style.maxHeight = '600px'; /* Retorno à altura original */
-            document.querySelector('.container').style.padding = '20px'; 
+            document.querySelector('.btn-login').style.display = 'block';
+            document.querySelector('.btn-signup').style.display = 'block';
+            document.querySelector('.footer').style.display = 'block';
+
+            document.querySelector('.container').style.maxHeight = '600px';
+            document.querySelector('.container').style.padding = '20px';
         }
 
         function login() {
             alert('Login realizado com sucesso!');
         }
 
-        function createAccount() {
-            alert('Conta criada com sucesso!');
+        async function createAccount() {
+            const username = document.getElementById('signup-username').value;
+            const password = document.getElementById('signup-password').value;
+            const errorElement = document.getElementById('signup-error');
+
+            errorElement.style.display = 'none';
+
+            if (!username || !password) {
+                errorElement.textContent = 'Por favor, preencha todos os campos.';
+                errorElement.style.display = 'block';
+                return;
+            }
+
+            const data = { username, password };
+
+            try {
+                const response = await fetch('http://localhost:3000/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    goBackToInitial();
+                } else {
+                    errorElement.textContent = result.message;
+                    errorElement.style.display = 'block';
+                }
+            } catch (error) {
+                errorElement.textContent = 'Erro ao conectar com o servidor.';
+                errorElement.style.display = 'block';
+                console.error(error);
+            }
         }
     </script>
 </body>
