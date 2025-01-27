@@ -175,6 +175,32 @@
         transform: translateY(0);
       }
     }
+
+      /* Estilo para a imagem carregada sobre o botão */
+    .camera-button button {
+      position: relative;
+    }
+
+    .image-preview {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      border: 3px solid #ff5722;
+      display: none; /* Inicialmente escondido */
+    }
+
+    .error-message {
+      color: red;
+      font-size: 12px;
+      margin-top: 0.5rem;
+      display: none; /* Inicialmente escondida */
+    }
+
   </style>
 </head>
 <body>
@@ -185,18 +211,28 @@
       <p>Defina uma foto e um ID</p>
     </header>
 
-    <!-- Botão de tirar foto -->
-    <div class="camera-button">
-      <button>
-        <i class="fas fa-camera"></i>
-        Tirar Foto
-      </button>
-    </div>
+  <!-- Botão de tirar foto -->
+  <div class="camera-button">
+    <input type="file" id="upload-image" style="display: none;" accept="image/*">
+    <button onclick="document.getElementById('upload-image').click();">
+      <i class="fas fa-camera"></i>
+      <div id="image-preview" class="image-preview"></div>
+      Tirar Foto
+    </button>
+    <div id="image-error" class="error-message"></div> <!-- Mensagem de erro da imagem -->
+  </div>
 
-    <!-- Campo de entrada de ID -->
-    <div class="input-field">
-      <input id="user-id" type="text" placeholder="Insira o nome de usuário">
-    </div>
+  <!-- Campo de entrada de ID -->
+  <div class="input-field">
+    <input id="user-id" type="text" placeholder="Insira o nome de usuário">
+    <div id="name-error" class="error-message"></div> <!-- Mensagem de erro do nome -->
+  </div>
+  
+  <!-- Campo de entrada de senha -->
+  <div class="input-field">
+    <input id="password" type="password" placeholder="Insira a senha">
+    <div id="password-error" class="error-message"></div> <!-- Mensagem de erro da senha -->
+  </div>
 
     <!-- Botão continuar -->
     <button class="continue-button">CONTINUAR</button>
@@ -209,5 +245,117 @@
     </p>
     <div class="footer-login">Fazer login</div>
   </footer>
+
+  <script>
+    
+    // Definir UserImage como "vazio" no início
+    localStorage.setItem('UserImage', 'vazio');
+    const clientId = "e578402c39e3167"; // Substitua pelo seu Client-ID do Imgur
+    const uploadInput = document.getElementById('upload-image');
+
+    uploadInput.addEventListener('change', async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      try {
+        const response = await fetch('https://api.imgur.com/3/image', {
+          method: 'POST',
+          headers: {
+            Authorization: `Client-ID ${clientId}`,
+          },
+          body: formData,
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          const imageUrl = data.data.link;
+          console.log('Link da imagem:', imageUrl);
+          localStorage.removeItem('UserImage');
+          localStorage.setItem('UserImage', imageUrl);
+
+          // Exibe a imagem sobre o botão
+          const imagePreview = document.getElementById('image-preview');
+          imagePreview.style.backgroundImage = `url(${imageUrl})`;
+          imagePreview.style.display = 'block';  // Torna a imagem visível
+        } else {
+          console.error('Erro ao fazer upload:', data);
+        }
+      } catch (error) {
+        console.error('Erro:', error);
+      }
+    }
+  });
+
+  //Rota pra mandar cadastro pro servidor
+
+  document.querySelector('.continue-button').addEventListener('click', async () => {
+  const userImage = localStorage.getItem('UserImage');
+  const userId = document.getElementById('user-id').value.trim();
+  const password = document.getElementById('password').value.trim();
+  
+  // Limpa mensagens de erro anteriores
+  document.getElementById('image-error').style.display = 'none';
+  document.getElementById('name-error').style.display = 'none';
+  document.getElementById('password-error').style.display = 'none';
+
+  let valid = true;
+
+  if (localStorage.getItem('UserImage') === "vazio") {
+  const errorImage = document.getElementById('image-error');
+  errorImage.textContent = 'Você deve definir uma foto.';
+  errorImage.style.display = 'block';
+  valid = false;
+}
+  if (!userId) {
+    const errorName = document.getElementById('name-error');
+    errorName.textContent = 'Você deve definir um nome.';
+    errorName.style.display = 'block';
+    valid = false;
+  }
+  if (!password) {
+    const errorPassword = document.getElementById('password-error');
+    errorPassword.textContent = 'Você deve definir uma senha.';
+    errorPassword.style.display = 'block';
+    valid = false;
+  }
+
+  // Se algum campo estiver inválido, não envia os dados
+  if (!valid) {
+    return;
+  }
+
+  // Se todos os campos estiverem preenchidos, envia os dados para o servidor
+  const userData = {
+    imageUrl: userImage,
+    userId: userId,
+    password: password
+  };
+
+  try {
+    const response = await fetch('https://omlet-2-za6u.onrender.com/cadastro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userData)
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      // Redireciona ou mostra sucesso
+      alert('Cadastro realizado com sucesso!');
+    } else {
+      // Mostra erro de cadastro
+      alert('Erro ao realizar cadastro. Tente novamente.');
+    }
+  } catch (error) {
+    console.error('Erro:', error);
+    alert('Erro de conexão. Tente novamente.');
+  }
+});
+  </script>
 </body>
 </html>
+
