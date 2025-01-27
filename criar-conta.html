@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bem-vindo à Omlet</title>
+  <!-- Link para o Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1c1c2b;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      height: 100vh;
+      padding: 1rem;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+      animation: fadeInUp 1s ease-out forwards;
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    /* Cabeçalho */
+    .header {
+      margin-top: 2rem;
+    }
+
+    .header h1 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      font-size: 1rem;
+      color: #ccc;
+    }
+
+    /* Botão de foto */
+    .camera-button {
+      margin: 2rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .camera-button button {
+      width: 120px;
+      height: 120px;
+      background-color: #1c1c2b;
+      border: 3px solid #ff5722;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #ff5722;
+      cursor: pointer;
+      outline: none;
+      position: relative;
+    }
+
+    .camera-button button i {
+      font-size: 2rem;
+      color: #ff5722;
+      margin-bottom: 0.5rem;
+    }
+
+    .camera-button button:hover {
+      opacity: 0.9;
+    }
+
+    /* Campo de texto */
+    .input-field {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+      width: 100%;
+    }
+
+    .input-field input {
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border: 2px solid #ff5722;
+      border-radius: 5px;
+      background-color: #1c1c2b;
+      color: white;
+      outline: none;
+    }
+
+    .input-field input::placeholder {
+      color: #aaa;
+    }
+
+    .input-field input:focus {
+      border-color: #ff784e;
+    }
+
+    /* Botão principal */
+    .continue-button {
+      background-color: #333;
+      color: white;
+      width: 100%;
+      padding: 1rem 0;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 1rem;
+    }
+
+    .continue-button:hover {
+      background-color: #444;
+    }
+
+    /* Rodapé */
+    .footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #ccc;
+    }
+
+    .footer a {
+      color: #ff5722;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-login {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .footer-login:hover {
+      text-decoration: underline;
+    }
+
+    /* Animação */
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Cabeçalho -->
+    <header class="header">
+      <h1>BEM-VINDO à Omlet 2.0!</h1>
+      <p>Defina uma foto e um ID</p>
+    </header>
+
+    <!-- Botão de tirar foto -->
+    <div class="camera-button">
+      <button>
+        <i class="fas fa-camera"></i>
+        Tirar Foto
+      </button>
+    </div>
+
+    <!-- Campo de entrada de ID -->
+    <div class="input-field">
+      <input id="user-id" type="text" placeholder="Insira o nome de usuário">
+    </div>
+
+    <!-- Botão continuar -->
+    <button class="continue-button">CONTINUAR</button>
+  </div>
+
+  <!-- Rodapé -->
+  <footer class="footer">
+    <p>
+      Ao continuar, você está nos confirmando que tem 13 anos ou mais, e concorda com
+      <a href="#termos">Termos</a> & <a href="#privacidade">Política de Privacidade</a> da Omlet.
+    </p>
+    <div class="footer-login">Fazer login</div>
+  </footer>
+</body>
+</html>
